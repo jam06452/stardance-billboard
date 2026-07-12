@@ -1,5 +1,6 @@
 import Config
-
+import Dotenvy
+source!([".env", ".#{config_env()}.env", System.get_env()])
 # config/runtime.exs is executed for all environments, including
 # during releases. It is executed after compilation and before the
 # system starts, so it is typically used to load production configuration
@@ -16,6 +17,18 @@ import Config
 #
 # Alternatively, you can use `mix phx.gen.release` to generate a `bin/server`
 # script that automatically sets the env var above.
+
+config :amur,
+  base_url: "http://localhost:4000",
+  providers: [
+    hackclub: [
+      client_id: env!("HACKCLUB_CLIENT_ID", :string!),
+      client_secret: env!("HACKCLUB_CLIENT_SECRET", :string!)
+    ]
+  ],
+  on_success: &Xinfeng.AuthController.on_success/2,
+  on_failure: &Xinfeng.AuthController.on_failure/2
+
 if System.get_env("PHX_SERVER") do
   config :xinfeng, XinfengWeb.Endpoint, server: true
 end

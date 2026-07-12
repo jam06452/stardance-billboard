@@ -14,6 +14,11 @@ defmodule XinfengWeb.Router do
     plug :accepts, ["json"]
   end
 
+  scope "/auth", alias: false do
+    pipe_through :browser
+    forward "/", Amur.Router
+  end
+
   scope "/", XinfengWeb do
     pipe_through :browser
 
