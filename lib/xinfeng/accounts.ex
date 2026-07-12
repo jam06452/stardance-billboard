@@ -13,7 +13,7 @@ defmodule Xinfeng.Accounts.User do
 
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:id, :name, :email, :slack_id])
+    |> cast(attrs, [:id, :name, :email, :slack_id, :adverts_left, :display_name])
     |> validate_required([:id, :name, :email])
     |> unique_constraint(:email)
   end

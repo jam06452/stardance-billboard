@@ -23,6 +23,7 @@ defmodule XinfengWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    live "/dash", DashLive
   end
 
   # Other scopes may use custom stacks.
