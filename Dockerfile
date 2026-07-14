@@ -28,7 +28,7 @@ FROM ${BUILDER_IMAGE} AS builder
 
 # install build dependencies
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends build-essential git \
+  && apt-get install -y --no-install-recommends build-essential git nodejs npm \
   && rm -rf /var/lib/apt/lists/*
 
 # prepare build dir
@@ -62,6 +62,9 @@ COPY lib lib
 RUN mix compile
 
 COPY assets assets
+
+# install npm dependencies
+RUN npm ci --prefix assets
 
 # compile assets
 RUN mix assets.deploy
