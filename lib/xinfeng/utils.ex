@@ -40,7 +40,7 @@ defmodule Xinfeng.Utils do
         {:authenticity_token, csrf_token},
         {:"post_devlog[body]",
          body <>
-           "\n\nIf you want an awesome advertaisement like this, visit https://billboard.jam06452.uk"}
+           "\n\nAdvertaise here at, https://billboard.jam06452.uk"}
       ] ++ remove_attachments ++ downloaded_attachments ++ empty_attachments
 
     Req.post!(devlog_url,
