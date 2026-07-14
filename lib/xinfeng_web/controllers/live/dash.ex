@@ -180,7 +180,6 @@ defmodule XinfengWeb.DashLive do
                       popovertarget="cally-popover1"
                       class="w-full flex items-center text-left rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-sm text-white transition-all hover:bg-white/10"
                       id="cally1"
-                      style="anchor-name:--cally1"
                     >
                       {if @form.params["schedule_date"] in [nil, ""],
                         do: "Pick a date",
@@ -189,19 +188,16 @@ defmodule XinfengWeb.DashLive do
 
                     <div id="cally-wrapper" phx-update="ignore">
                       <div
-                        popover
+                        popover="auto"
                         id="cally-popover1"
-                        class="rounded-xl bg-[#1b1324] border border-white/10 shadow-2xl p-3"
-                        style="position-anchor:--cally1"
+                        class="m-auto rounded-xl bg-[#1b1324] border border-white/10 shadow-2xl p-3"
                       >
                         <calendar-date
+                          id="cally-calendar"
                           class="cally"
-                          onchange="
-                            document.getElementById('cally1').innerText = this.value;
-                            let hidden = document.getElementById('hidden_date');
-                            hidden.value = this.value;
-                            hidden.dispatchEvent(new Event('input', {bubbles: true}));
-                          "
+                          phx-hook=".CallyPicker"
+                          min={Date.utc_today() |> Date.to_iso8601()}
+                          value={@form.params["schedule_date"] || ""}
                         >
                           <svg
                             aria-label="Previous"
@@ -254,6 +250,27 @@ defmodule XinfengWeb.DashLive do
                     {translate_error(msg)}
                   </p>
                 </div>
+
+                <script :type={Phoenix.LiveView.ColocatedHook} name=".CallyPicker">
+                  export default {
+                    mounted() {
+                      this.el.addEventListener("change", () => {
+                        const value = this.el.value;
+                        const button = document.getElementById("cally1");
+                        const hidden = document.getElementById("hidden_date");
+                        if (button) button.innerText = value || "Pick a date";
+                        if (hidden) {
+                          hidden.value = value;
+                          hidden.dispatchEvent(new Event("input", { bubbles: true }));
+                        }
+                        const popover = document.getElementById("cally-popover1");
+                        if (popover && typeof popover.hidePopover === "function") {
+                          popover.hidePopover();
+                        }
+                      });
+                    }
+                  }
+                </script>
 
                 <div class="space-y-3">
                   <p class="text-sm font-medium text-white/70">
