@@ -7,6 +7,8 @@ defmodule Xinfeng.Accounts.User do
     field :name, :string
     field :email, :string
     field :slack_id, :string
+    field :adverts_left, :integer, default: 1
+    field :display_name, :string
 
     timestamps()
   end

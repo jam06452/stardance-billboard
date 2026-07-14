@@ -1,4 +1,5 @@
 import Config
+config :xinfeng, Oban, testing: :manual
 
 # Configure your database
 #

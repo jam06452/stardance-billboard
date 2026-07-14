@@ -24,12 +24,13 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import {hooks as colocatedHooks} from "phoenix-colocated/xinfeng"
 import topbar from "../vendor/topbar"
+import "cally";
+
 let Hooks = {}
 
 Hooks.LocalTimezone = {
   mounted() {
-    // Grabs the IANA timezone (e.g., "America/New_York" or "Europe/London")
-    this.el.value = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    this.pushEvent("set_timezone", {timezone: Intl.DateTimeFormat().resolvedOptions().timeZone});
   }
 }
 
@@ -37,7 +38,7 @@ const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute
 const liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
   params: {_csrf_token: csrfToken},
-  hooks: {...colocatedHooks},
+  hooks: {...colocatedHooks, ...Hooks},
 })
 
 // Show progress bar on live navigation and form submits

@@ -11,6 +11,7 @@ defmodule Xinfeng.Application do
       XinfengWeb.Telemetry,
       Xinfeng.Repo,
       {DNSCluster, query: Application.get_env(:xinfeng, :dns_cluster_query) || :ignore},
+      {Oban, Application.fetch_env!(:xinfeng, Oban)},
       {Phoenix.PubSub, name: Xinfeng.PubSub},
       # Start a worker by calling: Xinfeng.Worker.start_link(arg)
       # {Xinfeng.Worker, arg},

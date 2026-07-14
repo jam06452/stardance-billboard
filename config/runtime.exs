@@ -26,8 +26,12 @@ config :amur,
       client_secret: env!("HACKCLUB_CLIENT_SECRET", :string!)
     ]
   ],
-  on_success: &Xinfeng.AuthController.on_success/2,
-  on_failure: &Xinfeng.AuthController.on_failure/2
+  on_success: &XinfengWeb.AuthController.on_success/2,
+  on_failure: &XinfengWeb.AuthController.on_failure/2
+
+config :xinfeng, hackclub_cdn_key: env!("HACKCLUB_CDN_KEY", :string!)
+config :xinfeng, stardance_cookie: env!("STARDANCE_COOKIE", :string!)
+config :xinfeng, devlog_url: env!("DEVLOG_URL", :string!)
 
 if System.get_env("PHX_SERVER") do
   config :xinfeng, XinfengWeb.Endpoint, server: true
