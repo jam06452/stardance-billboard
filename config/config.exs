@@ -7,6 +7,20 @@
 # General application configuration
 import Config
 
+config :xinfeng, Oban,
+  engine: Oban.Engines.Basic,
+  notifier: Oban.Notifiers.Postgres,
+  queues: [default: 10],
+  repo: Xinfeng.Repo,
+  plugins: [
+    {Oban.Plugins.Cron,
+     crontab: [
+       {"*/5 * * * *", Xinfeng.Workers.AdvertPublisher}
+     ]}
+  ]
+
+config :elixir, :time_zone_database, Tz.TimeZoneDatabase
+
 config :xinfeng,
   ecto_repos: [Xinfeng.Repo],
   generators: [timestamp_type: :utc_datetime]
