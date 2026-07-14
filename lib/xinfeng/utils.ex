@@ -1,5 +1,5 @@
 defmodule Xinfeng.Utils do
-  @default_image "https://cdn.hackclub.com/019f6030-7ba5-7483-962f-8d1480cdbc09/17fe3dd4-741a-4862-822a-486ad8a8014f.png"
+  @default_image "https://cdn.hackclub.com/019f609d-d621-7c78-86ac-d9e21dec7b33/9f7adca7-f169-47ad-8f9c-3519032103a7.png"
 
   def edit_devlog(body, images \\ [], stardance_url \\ nil) do
     cookie = "_stardance_session_v3=" <> Application.get_env(:xinfeng, :stardance_cookie)
