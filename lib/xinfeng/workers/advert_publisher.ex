@@ -17,8 +17,14 @@ defmodule Xinfeng.Workers.AdvertPublisher do
       )
       |> Xinfeng.Repo.all()
 
-    for advert <- adverts do
-      Xinfeng.Utils.edit_devlog(advert.body, advert.image_urls)
+    if adverts == [] do
+      Xinfeng.Utils.edit_devlog(
+        "If you want an awesome advertaisement like this, visit https://billboard.jam06452.uk"
+      )
+    else
+      for advert <- adverts do
+        Xinfeng.Utils.edit_devlog(advert.body, advert.image_urls)
+      end
     end
 
     :ok
