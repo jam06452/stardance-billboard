@@ -1,4 +1,6 @@
 defmodule Xinfeng.Utils do
+  @default_image "https://cdn.hackclub.com/019f6030-7ba5-7483-962f-8d1480cdbc09/17fe3dd4-741a-4862-822a-486ad8a8014f.png"
+
   def edit_devlog(body, images \\ []) do
     cookie = "_stardance_session_v3=" <> Application.get_env(:xinfeng, :stardance_cookie)
     devlog_url = Application.get_env(:xinfeng, :devlog_url)
@@ -13,17 +15,15 @@ defmodule Xinfeng.Utils do
       |> Floki.find("input[name='remove_attachment_ids[]']")
       |> Floki.attribute("value")
 
+    final_images = if images == [], do: [@default_image], else: images
+
     remove_attachments =
-      if length(images) > 0 do
-        Enum.map(existing_image_ids, fn id ->
-          {:"remove_attachment_ids[]", id}
-        end)
-      else
-        []
-      end
+      Enum.map(existing_image_ids, fn id ->
+        {:"remove_attachment_ids[]", id}
+      end)
 
     downloaded_attachments =
-      images
+      final_images
       |> Task.async_stream(fn url ->
         %{body: image_binary} = Req.get!(url)
         filename = url |> URI.parse() |> Map.get(:path) |> Path.basename()
@@ -31,14 +31,16 @@ defmodule Xinfeng.Utils do
       end)
       |> Enum.map(fn {:ok, result} -> result end)
 
-    empty_slots_needed = max(0, 3 - length(images))
+    empty_slots_needed = max(0, 3 - length(final_images))
     empty_attachments = List.duplicate({:"post_devlog[attachments][]", ""}, empty_slots_needed)
 
     multipart_data =
       [
         {:_method, "patch"},
         {:authenticity_token, csrf_token},
-        {:"post_devlog[body]", body}
+        {:"post_devlog[body]",
+         body <>
+           "\n\nIf you want an awesome advertaisement like this, visit https://billboard.jam06452.uk"}
       ] ++ remove_attachments ++ downloaded_attachments ++ empty_attachments
 
     Req.post!(devlog_url,
