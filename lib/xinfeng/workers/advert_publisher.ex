@@ -23,7 +23,7 @@ defmodule Xinfeng.Workers.AdvertPublisher do
       )
     else
       for advert <- adverts do
-        Xinfeng.Utils.edit_devlog(advert.body, advert.image_urls)
+        Xinfeng.Utils.edit_devlog(advert.body, advert.image_urls, advert.link)
       end
     end
 

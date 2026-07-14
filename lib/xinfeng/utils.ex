@@ -1,7 +1,7 @@
 defmodule Xinfeng.Utils do
   @default_image "https://cdn.hackclub.com/019f6030-7ba5-7483-962f-8d1480cdbc09/17fe3dd4-741a-4862-822a-486ad8a8014f.png"
 
-  def edit_devlog(body, images \\ []) do
+  def edit_devlog(body, images \\ [], stardance_url \\ nil) do
     cookie = "_stardance_session_v3=" <> Application.get_env(:xinfeng, :stardance_cookie)
     devlog_url = Application.get_env(:xinfeng, :devlog_url)
 
@@ -34,13 +34,20 @@ defmodule Xinfeng.Utils do
     empty_slots_needed = max(0, 3 - length(final_images))
     empty_attachments = List.duplicate({:"post_devlog[attachments][]", ""}, empty_slots_needed)
 
+    body_with_footer = body <> "\n\nAdvertaise here at, https://billboard.jam06452.uk"
+
+    final_body =
+      if stardance_url do
+        stardance_url <> "\n\n" <> body_with_footer
+      else
+        body_with_footer
+      end
+
     multipart_data =
       [
         {:_method, "patch"},
         {:authenticity_token, csrf_token},
-        {:"post_devlog[body]",
-         body <>
-           "\n\nAdvertaise here at, https://billboard.jam06452.uk"}
+        {:"post_devlog[body]", final_body}
       ] ++ remove_attachments ++ downloaded_attachments ++ empty_attachments
 
     Req.post!(devlog_url,
