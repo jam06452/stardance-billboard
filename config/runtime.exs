@@ -19,7 +19,7 @@ source!([".env", ".#{config_env()}.env", System.get_env()])
 # script that automatically sets the env var above.
 
 config :amur,
-  base_url: "http://localhost:4000",
+  base_url: "https://billboard.jam06452.uk",
   providers: [
     hackclub: [
       client_id: env!("HACKCLUB_CLIENT_ID", :string!),
