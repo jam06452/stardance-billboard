@@ -10,6 +10,10 @@ defmodule XinfengWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :require_auth do
+    plug XinfengWeb.Plugs.AuthPlug
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -21,8 +25,13 @@ defmodule XinfengWeb.Router do
 
   scope "/", XinfengWeb do
     pipe_through :browser
-
     get "/", PageController, :home
+    get "/signout", AuthController, :signout
+  end
+
+  scope "/", XinfengWeb do
+    pipe_through :browser
+    pipe_through :require_auth
     live "/dash", DashLive
   end
 
