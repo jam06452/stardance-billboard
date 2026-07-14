@@ -67,7 +67,11 @@ defmodule Xinfeng.MixProject do
       {:dns_cluster, "~> 0.2.0"},
       {:bandit, "~> 1.5"},
       {:amur, "~> 0.1.1"},
-      {:dotenvy, "~> 1.1"}
+      {:dotenvy, "~> 1.1"},
+      {:tz, "~> 0.3"},
+      {:floki, "~> 0.38"},
+      {:oban, "~> 2.23"},
+      {:igniter, "~> 0.5", only: [:dev]}
     ]
   end
 
