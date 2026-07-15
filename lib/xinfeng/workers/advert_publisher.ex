@@ -19,7 +19,11 @@ defmodule Xinfeng.Workers.AdvertPublisher do
 
     if adverts == [] do
       Xinfeng.Utils.edit_devlog(
-        "If you want an awesome advertaisement like this, visit https://billboard.jam06452.uk"
+        "Do you want to know how computers *actually* work? Do you want to remove the wool placed over your eyes by modern languages? Abstraction breeds ambiguity! Crawssembly is the first step to seeing clearly. The only assembly langiage made for education. (Now as fast as native C!)",
+        [
+          "https://cdn.hackclub.com/019f609d-d621-7c78-86ac-d9e21dec7b33/9f7adca7-f169-47ad-8f9c-3519032103a7.png"
+        ],
+        "https://stardance.hackclub.com/projects/8100"
       )
     else
       for advert <- adverts do
